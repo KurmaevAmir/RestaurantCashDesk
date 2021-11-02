@@ -1,6 +1,8 @@
-from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget
 import sys
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QFileDialog
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget
+
 if hasattr(QtCore.Qt, 'AA_EnableHighDpiScaling'):
     QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)
 
@@ -91,6 +93,8 @@ class DesignMainWindow(QMainWindow):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
         self.pushButton_3.clicked.connect(self.open_settings)
+        self.pushButton_2.clicked.connect(self.open_dishes)
+        self.pushButton.clicked.connect(self.open_beverages)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -104,12 +108,22 @@ class DesignMainWindow(QMainWindow):
         self.pushButton_4.setText(_translate("MainWindow", "Оплатить"))
 
     def open_settings(self):
-        self.settings = Settings(self)
+        self.settings = Settings()
         self.settings.show()
 
+    def open_dishes(self):
+        self.dishes = Dishes()
+        self.dishes.show()
 
-class Settings(QWidget):
+    def open_beverages(self):
+        self.beverages = Beverages()
+        self.beverages.show()
+
+
+"""class Settings(QMainWindow):
     def __init__(self):
+        self.input_password_list = []
+        self.password = ["0", "0", "0", "0"]
         super().__init__()
         self.setupUi(self)
 
@@ -271,6 +285,19 @@ class Settings(QWidget):
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
+        self.pushButton_11.clicked.connect(self.clear_symbol)
+        self.pushButton_12.clicked.connect(self.check_password)
+        self.pushButton.clicked.connect(lambda: self.symbols(self.pushButton.text()))
+        self.pushButton_2.clicked.connect(lambda: self.symbols(self.pushButton_2.text()))
+        self.pushButton_3.clicked.connect(lambda: self.symbols(self.pushButton_3.text()))
+        self.pushButton_4.clicked.connect(lambda: self.symbols(self.pushButton_4.text()))
+        self.pushButton_5.clicked.connect(lambda: self.symbols(self.pushButton_5.text()))
+        self.pushButton_6.clicked.connect(lambda: self.symbols(self.pushButton_6.text()))
+        self.pushButton_7.clicked.connect(lambda: self.symbols(self.pushButton_7.text()))
+        self.pushButton_8.clicked.connect(lambda: self.symbols(self.pushButton_8.text()))
+        self.pushButton_9.clicked.connect(lambda: self.symbols(self.pushButton_9.text()))
+        self.pushButton_10.clicked.connect(lambda: self.symbols(self.pushButton_10.text()))
+
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("Settigs", "MainWindow"))
@@ -287,10 +314,228 @@ class Settings(QWidget):
         self.pushButton_10.setText(_translate("MainWindow", "0"))
         self.pushButton_11.setText(_translate("MainWindow", "C"))
         self.pushButton_12.setText(_translate("MainWindow", "Enter"))
-        self.label_2.setText(_translate("MainWindow", "Введите пароль"))
+        self.label_2.setText(_translate("MainWindow", "Введите пароль"))"""
 
 
-class Dishes(object):
+class Settings(QWidget):
+    def __init__(self):
+        self.input_password_list = []
+        self.password = open("Password/Password.txt", "r", encoding="utf8").read().split()
+        super().__init__()
+        self.setupUi(self)
+
+    def setupUi(self, Form):
+        Form.setObjectName("Form")
+        Form.resize(1100, 900)
+        self.label = QtWidgets.QLabel(Form)
+        self.label.setGeometry(QtCore.QRect(435, 50, 231, 51))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(30)
+        font.setBold(True)
+        font.setItalic(True)
+        font.setWeight(75)
+        self.label.setFont(font)
+        self.label.setObjectName("label")
+        self.gridLayoutWidget = QtWidgets.QWidget(Form)
+        self.gridLayoutWidget.setGeometry(QtCore.QRect(420, 260, 261, 341))
+        self.gridLayoutWidget.setObjectName("gridLayoutWidget")
+        self.gridLayout = QtWidgets.QGridLayout(self.gridLayoutWidget)
+        self.gridLayout.setContentsMargins(0, 0, 0, 0)
+        self.gridLayout.setObjectName("gridLayout")
+        self.pushButton = QtWidgets.QPushButton(self.gridLayoutWidget)
+        self.pushButton.setMinimumSize(QtCore.QSize(80, 80))
+        self.pushButton.setMaximumSize(QtCore.QSize(80, 80))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(36)
+        self.pushButton.setFont(font)
+        self.pushButton.setStyleSheet("")
+        self.pushButton.setObjectName("pushButton")
+        self.gridLayout.addWidget(self.pushButton, 0, 0, 1, 1)
+        self.pushButton_6 = QtWidgets.QPushButton(self.gridLayoutWidget)
+        self.pushButton_6.setMinimumSize(QtCore.QSize(80, 80))
+        self.pushButton_6.setMaximumSize(QtCore.QSize(80, 80))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(36)
+        self.pushButton_6.setFont(font)
+        self.pushButton_6.setObjectName("pushButton_6")
+        self.gridLayout.addWidget(self.pushButton_6, 1, 2, 1, 1)
+        self.pushButton_8 = QtWidgets.QPushButton(self.gridLayoutWidget)
+        self.pushButton_8.setMinimumSize(QtCore.QSize(80, 80))
+        self.pushButton_8.setMaximumSize(QtCore.QSize(80, 80))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(36)
+        self.pushButton_8.setFont(font)
+        self.pushButton_8.setObjectName("pushButton_8")
+        self.gridLayout.addWidget(self.pushButton_8, 2, 1, 1, 1)
+        self.pushButton_3 = QtWidgets.QPushButton(self.gridLayoutWidget)
+        self.pushButton_3.setMinimumSize(QtCore.QSize(80, 80))
+        self.pushButton_3.setMaximumSize(QtCore.QSize(80, 80))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(36)
+        self.pushButton_3.setFont(font)
+        self.pushButton_3.setObjectName("pushButton_3")
+        self.gridLayout.addWidget(self.pushButton_3, 0, 2, 1, 1)
+        self.pushButton_5 = QtWidgets.QPushButton(self.gridLayoutWidget)
+        self.pushButton_5.setMinimumSize(QtCore.QSize(80, 80))
+        self.pushButton_5.setMaximumSize(QtCore.QSize(80, 80))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(36)
+        self.pushButton_5.setFont(font)
+        self.pushButton_5.setObjectName("pushButton_5")
+        self.gridLayout.addWidget(self.pushButton_5, 1, 1, 1, 1)
+        self.pushButton_9 = QtWidgets.QPushButton(self.gridLayoutWidget)
+        self.pushButton_9.setMinimumSize(QtCore.QSize(80, 80))
+        self.pushButton_9.setMaximumSize(QtCore.QSize(80, 80))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(36)
+        self.pushButton_9.setFont(font)
+        self.pushButton_9.setObjectName("pushButton_9")
+        self.gridLayout.addWidget(self.pushButton_9, 2, 2, 1, 1)
+        self.pushButton_2 = QtWidgets.QPushButton(self.gridLayoutWidget)
+        self.pushButton_2.setEnabled(True)
+        self.pushButton_2.setMinimumSize(QtCore.QSize(80, 80))
+        self.pushButton_2.setMaximumSize(QtCore.QSize(80, 80))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(36)
+        self.pushButton_2.setFont(font)
+        self.pushButton_2.setObjectName("pushButton_2")
+        self.gridLayout.addWidget(self.pushButton_2, 0, 1, 1, 1)
+        self.pushButton_7 = QtWidgets.QPushButton(self.gridLayoutWidget)
+        self.pushButton_7.setMinimumSize(QtCore.QSize(80, 80))
+        self.pushButton_7.setMaximumSize(QtCore.QSize(80, 80))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(36)
+        self.pushButton_7.setFont(font)
+        self.pushButton_7.setObjectName("pushButton_7")
+        self.gridLayout.addWidget(self.pushButton_7, 2, 0, 1, 1)
+        self.pushButton_4 = QtWidgets.QPushButton(self.gridLayoutWidget)
+        self.pushButton_4.setMinimumSize(QtCore.QSize(80, 80))
+        self.pushButton_4.setMaximumSize(QtCore.QSize(80, 80))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(36)
+        self.pushButton_4.setFont(font)
+        self.pushButton_4.setObjectName("pushButton_4")
+        self.gridLayout.addWidget(self.pushButton_4, 1, 0, 1, 1)
+        self.pushButton_10 = QtWidgets.QPushButton(self.gridLayoutWidget)
+        self.pushButton_10.setMinimumSize(QtCore.QSize(80, 80))
+        self.pushButton_10.setMaximumSize(QtCore.QSize(80, 80))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(39)
+        self.pushButton_10.setFont(font)
+        self.pushButton_10.setObjectName("pushButton_10")
+        self.gridLayout.addWidget(self.pushButton_10, 3, 1, 1, 1)
+        self.pushButton_11 = QtWidgets.QPushButton(self.gridLayoutWidget)
+        self.pushButton_11.setMinimumSize(QtCore.QSize(80, 80))
+        self.pushButton_11.setMaximumSize(QtCore.QSize(80, 80))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(39)
+        self.pushButton_11.setFont(font)
+        self.pushButton_11.setStyleSheet("background-color: #FFD041;")
+        self.pushButton_11.setObjectName("pushButton_11")
+        self.gridLayout.addWidget(self.pushButton_11, 3, 0, 1, 1)
+        self.pushButton_12 = QtWidgets.QPushButton(self.gridLayoutWidget)
+        self.pushButton_12.setMinimumSize(QtCore.QSize(80, 80))
+        self.pushButton_12.setMaximumSize(QtCore.QSize(80, 80))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(20)
+        self.pushButton_12.setFont(font)
+        self.pushButton_12.setStyleSheet("background-color: #DD5145;")
+        self.pushButton_12.setObjectName("pushButton_12")
+        self.gridLayout.addWidget(self.pushButton_12, 3, 2, 1, 1)
+        self.lcdNumber = QtWidgets.QLCDNumber(Form)
+        self.lcdNumber.setGeometry(QtCore.QRect(420, 200, 261, 47))
+        self.lcdNumber.setDigitCount(4)
+        self.lcdNumber.setObjectName("lcdNumber")
+        self.label_2 = QtWidgets.QLabel(Form)
+        self.label_2.setGeometry(QtCore.QRect(455, 150, 191, 31))
+        font = QtGui.QFont()
+        font.setFamily("Times New Roman")
+        font.setPointSize(20)
+        font.setBold(False)
+        font.setItalic(True)
+        font.setWeight(50)
+        self.label_2.setFont(font)
+        self.label_2.setObjectName("label_2")
+
+        self.retranslateUi(Form)
+        QtCore.QMetaObject.connectSlotsByName(Form)
+
+        self.pushButton_11.clicked.connect(self.clear_symbol)
+        self.pushButton_12.clicked.connect(self.check_password)
+        self.pushButton.clicked.connect(lambda: self.symbols(self.pushButton.text()))
+        self.pushButton_2.clicked.connect(lambda: self.symbols(self.pushButton_2.text()))
+        self.pushButton_3.clicked.connect(lambda: self.symbols(self.pushButton_3.text()))
+        self.pushButton_4.clicked.connect(lambda: self.symbols(self.pushButton_4.text()))
+        self.pushButton_5.clicked.connect(lambda: self.symbols(self.pushButton_5.text()))
+        self.pushButton_6.clicked.connect(lambda: self.symbols(self.pushButton_6.text()))
+        self.pushButton_7.clicked.connect(lambda: self.symbols(self.pushButton_7.text()))
+        self.pushButton_8.clicked.connect(lambda: self.symbols(self.pushButton_8.text()))
+        self.pushButton_9.clicked.connect(lambda: self.symbols(self.pushButton_9.text()))
+        self.pushButton_10.clicked.connect(lambda: self.symbols(self.pushButton_10.text()))
+
+    def retranslateUi(self, Form):
+        _translate = QtCore.QCoreApplication.translate
+        Form.setWindowTitle(_translate("Settings", "Form"))
+        self.label.setText(_translate("Form", "Настройки"))
+        self.pushButton.setText(_translate("Form", "1"))
+        self.pushButton_6.setText(_translate("Form", "6"))
+        self.pushButton_8.setText(_translate("Form", "8"))
+        self.pushButton_3.setText(_translate("Form", "3"))
+        self.pushButton_5.setText(_translate("Form", "5"))
+        self.pushButton_9.setText(_translate("Form", "9"))
+        self.pushButton_2.setText(_translate("Form", "2"))
+        self.pushButton_7.setText(_translate("Form", "7"))
+        self.pushButton_4.setText(_translate("Form", "4"))
+        self.pushButton_10.setText(_translate("Form", "0"))
+        self.pushButton_11.setText(_translate("Form", "C"))
+        self.pushButton_12.setText(_translate("Form", "Enter"))
+        self.label_2.setText(_translate("Form", "Введите пароль"))
+
+    def open_administrator_settings(self):
+        self.administrator_settings = AdministratorSettings()
+        self.administrator_settings.show()
+
+    def symbols(self, n):
+        if len(self.input_password_list) != 4:
+            self.input_password_list.append(n)
+        self.lcdNumber.display(''.join(self.input_password_list))
+
+    def check_password(self):
+        if self.input_password_list == self.password:
+            self.open_administrator_settings()
+        else:
+            self.input_password_list.clear()
+            self.lcdNumber.display("0")
+
+    def clear_symbol(self):
+        if len(self.input_password_list) == 1 and 0 not in self.input_password_list:
+            del self.input_password_list[-1]
+            self.lcdNumber.display("0")
+        elif len(self.input_password_list) == 0 or len(self.input_password_list) == 1:
+            self.lcdNumber.display("0")
+        else:
+            del self.input_password_list[-1]
+            self.lcdNumber.display(''.join(self.input_password_list))
+
+
+class Dishes(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.setupUi(self)
+
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1100, 900)
@@ -506,7 +751,11 @@ class Dishes(object):
         self.pushButton_16.setText(_translate("MainWindow", "Блюдо"))
 
 
-class Beverages(object):
+class Beverages(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.setupUi(self)
+
     def setupUi(self, Beverages):
         Beverages.setObjectName("Beverages")
         Beverages.resize(1100, 900)
@@ -723,7 +972,11 @@ class Beverages(object):
         self.pushButton_16.setText(_translate("Beverages", "Оплатить"))
 
 
-class AdministratorSettings(object):
+class AdministratorSettings(DesignMainWindow, QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.setupUi(self)
+
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1100, 900)
@@ -775,6 +1028,9 @@ class AdministratorSettings(object):
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
+        self.pushButton.clicked.connect(self.open_change_password)
+        self.pushButton_2.clicked.connect(self.takeDatabase)
+
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("AdministratorSettings", "MainWindow"))
@@ -782,8 +1038,25 @@ class AdministratorSettings(object):
         self.pushButton_2.setText(_translate("MainWindow", "Загрузить базу данных"))
         self.pushButton.setText(_translate("MainWindow", "Сменить пароль"))
 
+    def takeDatabase(self):
+        self.database = QFileDialog.getOpenFileName(self, "Выбрать базу данных", "", "База данных (*sqlite)")
 
-class ChangePassword(object):
+    def open_change_password(self):
+        self.change_password = ChangePassword()
+        self.change_password.show()
+
+
+class ChangePassword(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.password = open("Password/Password.txt", "r", encoding="utf8").read().split()
+        self.newPassword = []
+        self.cond = True
+        self.cond2 = True
+        self.cond3 = True
+        self.input_symbols_list = []
+        self.setupUi(self)
+
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1100, 900)
@@ -801,6 +1074,7 @@ class ChangePassword(object):
         self.label.setObjectName("label")
         self.lcdNumber = QtWidgets.QLCDNumber(self.centralwidget)
         self.lcdNumber.setGeometry(QtCore.QRect(420, 200, 261, 47))
+        self.lcdNumber.setDigitCount(4)
         self.lcdNumber.setObjectName("lcdNumber")
         self.gridLayoutWidget = QtWidgets.QWidget(self.centralwidget)
         self.gridLayoutWidget.setGeometry(QtCore.QRect(420, 260, 261, 340))
@@ -938,9 +1212,23 @@ class ChangePassword(object):
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
+        self.pushButton.clicked.connect(lambda: self.symbols(self.pushButton.text()))
+        self.pushButton_2.clicked.connect(lambda: self.symbols(self.pushButton_2.text()))
+        self.pushButton_3.clicked.connect(lambda: self.symbols(self.pushButton_3.text()))
+        self.pushButton_4.clicked.connect(lambda: self.symbols(self.pushButton_4.text()))
+        self.pushButton_7.clicked.connect(lambda: self.symbols(self.pushButton_7.text()))
+        self.pushButton_8.clicked.connect(lambda: self.symbols(self.pushButton_8.text()))
+        self.pushButton_5.clicked.connect(lambda: self.symbols(self.pushButton_5.text()))
+        self.pushButton_9.clicked.connect(lambda: self.symbols(self.pushButton_9.text()))
+        self.pushButton_10.clicked.connect(lambda: self.symbols(self.pushButton_10.text()))
+        self.pushButton_11.clicked.connect(lambda: self.symbols(self.pushButton_11.text()))
+        self.pushButton_12.clicked.connect(self.enter)
+        self.pushButton_6.clicked.connect(self.clear)
+
+
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("ChangePassword", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "ChangePassword"))
         self.label.setText(_translate("MainWindow", "Смена Пароля"))
         self.pushButton_2.setText(_translate("MainWindow", "2"))
         self.pushButton_3.setText(_translate("MainWindow", "3"))
@@ -955,6 +1243,54 @@ class ChangePassword(object):
         self.pushButton_11.setText(_translate("MainWindow", "0"))
         self.pushButton_12.setText(_translate("MainWindow", "Enter"))
         self.label_2.setText(_translate("MainWindow", "Введите старый пароль"))
+
+    def symbols(self, n):
+        if len(self.input_symbols_list) != 4:
+            self.input_symbols_list.append(n)
+        self.lcdNumber.display("".join(self.input_symbols_list))
+
+    def enter(self):
+        if self.cond:
+            if self.input_symbols_list == self.password:
+                self.cond = False
+                self.label_2.setGeometry(QtCore.QRect(415, 150, 271, 31))
+                self.label_2.setText("Введите новый пароль")
+            else:
+                self.label_2.setText("Неверный пароль. Повторите попытку!")
+            self.input_symbols_list.clear()
+            self.lcdNumber.display("0")
+        elif self.cond2:
+            if len(self.input_symbols_list) == 4:
+                self.newPassword = self.input_symbols_list.copy()
+                self.label_2.setText("Повторите пароль")
+                self.cond2 = False
+            else:
+                self.label_2.setText("Неверное количество символов")
+            self.input_symbols_list.clear()
+            self.lcdNumber.display("0")
+        elif self.cond3:
+            if self.input_symbols_list == self.newPassword:
+                f = open("Password/Password.txt", "w", encoding="utf8")
+                f.write(' '.join(self.newPassword))
+                f.close()
+                self.input_symbols_list.clear()
+                self.cond3 = False
+                self.label_2.setText("Вы успешно обновили пароль!")
+                self.lcdNumber.display("0")
+            else:
+                self.label_2.setText("Пароли не совпадают")
+                self.input_symbols_list.clear()
+                self.lcdNumber.display("0")
+
+    def clear(self):
+        if len(self.input_symbols_list) == 1 and 0 not in self.input_symbols_list:
+            del self.input_symbols_list[-1]
+            self.lcdNumber.display("0")
+        elif len(self.input_symbols_list) == 0 or len(self.input_symbols_list) == 1:
+            self.lcdNumber.display("0")
+        else:
+            del self.input_symbols_list[-1]
+            self.lcdNumber.display(''.join(self.input_symbols_list))
 
 
 if __name__ == "__main__":
