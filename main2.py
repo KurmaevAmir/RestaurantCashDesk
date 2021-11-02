@@ -1,6 +1,8 @@
-from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget
 import sys
+import datetime as dt
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QFileDialog
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget
 
 if hasattr(QtCore.Qt, 'AA_EnableHighDpiScaling'):
     QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)
@@ -49,13 +51,13 @@ class DesignMainWindow(QMainWindow):
         font.setWeight(75)
         self.label.setFont(font)
         self.label.setObjectName("label")
-        self.label_2 = QtWidgets.QLabel(self.centralwidget)
-        self.label_2.setGeometry(QtCore.QRect(1000, 840, 101, 21))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(10)
-        self.label_2.setFont(font)
-        self.label_2.setObjectName("label_2")
+        #self.label_2 = QtWidgets.QLabel(self.centralwidget)
+        #self.label_2.setGeometry(QtCore.QRect(1000, 840, 101, 21))
+        #font = QtGui.QFont()
+        #font.setFamily("Arial")
+        #font.setPointSize(10)
+        #self.label_2.setFont(font)
+        #self.label_2.setObjectName("label_2")
         self.pushButton_3 = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_3.setGeometry(QtCore.QRect(1070, 0, 31, 31))
         font = QtGui.QFont()
@@ -94,6 +96,8 @@ class DesignMainWindow(QMainWindow):
         self.pushButton_3.clicked.connect(self.open_settings)
         self.pushButton_2.clicked.connect(self.open_dishes)
         self.pushButton.clicked.connect(self.open_beverages)
+        #self.label_2.setText(dt.datetime.now().strftime("%X %x"))
+        #print(dt.datetime.now().strftime("%X(de_DE) %x(de_DE)"))
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -101,7 +105,7 @@ class DesignMainWindow(QMainWindow):
         self.pushButton.setText(_translate("MainWindow", "Напитки"))
         self.pushButton_2.setText(_translate("MainWindow", "Блюда"))
         self.label.setText(_translate("MainWindow", "Меню"))
-        self.label_2.setText(_translate("MainWindow", "00:00 00.00.0000"))
+        #self.label_2.setText(_translate("MainWindow", "00:00 00.00.0000"))
         self.pushButton_3.setText(_translate("MainWindow", "⚙"))
         self.label_3.setText(_translate("MainWindow", "Итого: 0"))
         self.pushButton_4.setText(_translate("MainWindow", "Оплатить"))
@@ -319,7 +323,7 @@ class DesignMainWindow(QMainWindow):
 class Settings(QWidget):
     def __init__(self):
         self.input_password_list = []
-        self.password = ["0", "0", "0", "0"]
+        self.password = open("Password/Password.txt", "r", encoding="utf8").read().split()
         super().__init__()
         self.setupUi(self)
 
@@ -456,6 +460,7 @@ class Settings(QWidget):
         self.gridLayout.addWidget(self.pushButton_12, 3, 2, 1, 1)
         self.lcdNumber = QtWidgets.QLCDNumber(Form)
         self.lcdNumber.setGeometry(QtCore.QRect(420, 200, 261, 47))
+        self.lcdNumber.setDigitCount(4)
         self.lcdNumber.setObjectName("lcdNumber")
         self.label_2 = QtWidgets.QLabel(Form)
         self.label_2.setGeometry(QtCore.QRect(455, 150, 191, 31))
@@ -507,19 +512,27 @@ class Settings(QWidget):
         self.administrator_settings.show()
 
     def symbols(self, n):
-        self.input_password_list.append(n)
+        if len(self.input_password_list) != 4:
+            self.input_password_list.append(n)
         self.lcdNumber.display(''.join(self.input_password_list))
 
     def check_password(self):
         if self.input_password_list == self.password:
             self.open_administrator_settings()
+            self.hide()
         else:
             self.input_password_list.clear()
             self.lcdNumber.display("0")
 
     def clear_symbol(self):
-        del self.input_password_list[-1]
-        self.lcdNumber.display(''.join(self.input_password_list))
+        if len(self.input_password_list) == 1 and 0 not in self.input_password_list:
+            del self.input_password_list[-1]
+            self.lcdNumber.display("0")
+        elif len(self.input_password_list) == 0 or len(self.input_password_list) == 1:
+            self.lcdNumber.display("0")
+        else:
+            del self.input_password_list[-1]
+            self.lcdNumber.display(''.join(self.input_password_list))
 
 
 class Dishes(QMainWindow):
@@ -542,13 +555,13 @@ class Dishes(QMainWindow):
         font.setWeight(75)
         self.label.setFont(font)
         self.label.setObjectName("label")
-        self.label_2 = QtWidgets.QLabel(self.centralwidget)
-        self.label_2.setGeometry(QtCore.QRect(1000, 840, 101, 16))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(10)
-        self.label_2.setFont(font)
-        self.label_2.setObjectName("label_2")
+        #self.label_2 = QtWidgets.QLabel(self.centralwidget)
+        #self.label_2.setGeometry(QtCore.QRect(1000, 840, 101, 16))
+        #font = QtGui.QFont()
+        #font.setFamily("Arial")
+        #font.setPointSize(10)
+        #self.label_2.setFont(font)
+        #self.label_2.setObjectName("label_2")
         self.pushButton = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton.setGeometry(QtCore.QRect(455, 820, 192, 39))
         font = QtGui.QFont()
@@ -722,7 +735,7 @@ class Dishes(QMainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("Dishes", "MainWindow"))
         self.label.setText(_translate("MainWindow", "Блюда"))
-        self.label_2.setText(_translate("MainWindow", "00:00 00.00.0000"))
+        #self.label_2.setText(_translate("MainWindow", "00:00 00.00.0000"))
         self.pushButton.setText(_translate("MainWindow", "Оплатить"))
         self.label_3.setText(_translate("MainWindow", "Итого: 0"))
         self.pushButton_4.setText(_translate("MainWindow", "Блюдо"))
@@ -903,13 +916,13 @@ class Beverages(QMainWindow):
         self.pushButton_15.setFont(font)
         self.pushButton_15.setObjectName("pushButton_15")
         self.gridLayout.addWidget(self.pushButton_15, 2, 4, 1, 1)
-        self.label_2 = QtWidgets.QLabel(self.centralwidget)
-        self.label_2.setGeometry(QtCore.QRect(1000, 840, 101, 16))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(10)
-        self.label_2.setFont(font)
-        self.label_2.setObjectName("label_2")
+        #self.label_2 = QtWidgets.QLabel(self.centralwidget)
+        #self.label_2.setGeometry(QtCore.QRect(1000, 840, 101, 16))
+        #font = QtGui.QFont()
+        #font.setFamily("Arial")
+        #font.setPointSize(10)
+        #self.label_2.setFont(font)
+        #self.label_2.setObjectName("label_2")
         self.label_3 = QtWidgets.QLabel(self.centralwidget)
         self.label_3.setGeometry(QtCore.QRect(0, 832, 991, 21))
         font = QtGui.QFont()
@@ -958,7 +971,7 @@ class Beverages(QMainWindow):
         self.pushButton_13.setText(_translate("Beverages", "Напиток"))
         self.pushButton_14.setText(_translate("Beverages", "Напиток"))
         self.pushButton_15.setText(_translate("Beverages", "Напиток"))
-        self.label_2.setText(_translate("Beverages", "00:00 00.00.0000"))
+        #self.label_2.setText(_translate("Beverages", "00:00 00.00.0000"))
         self.label_3.setText(_translate("Beverages", "Итого: 0"))
         self.pushButton_16.setText(_translate("Beverages", "Оплатить"))
 
@@ -1020,6 +1033,7 @@ class AdministratorSettings(DesignMainWindow, QMainWindow):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
         self.pushButton.clicked.connect(self.open_change_password)
+        self.pushButton_2.clicked.connect(self.takeDatabase)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -1028,14 +1042,22 @@ class AdministratorSettings(DesignMainWindow, QMainWindow):
         self.pushButton_2.setText(_translate("MainWindow", "Загрузить базу данных"))
         self.pushButton.setText(_translate("MainWindow", "Сменить пароль"))
 
+    def takeDatabase(self):
+        self.database = QFileDialog.getOpenFileName(self, "Выбрать базу данных", "", "База данных (*sqlite)")
+
     def open_change_password(self):
         self.change_password = ChangePassword()
-        self.change_password.show()
+        self.change_password.show()       
 
 
 class ChangePassword(QMainWindow):
     def __init__(self):
         super().__init__()
+        self.password = open("Password/Password.txt", "r", encoding="utf8").read().split()
+        self.newPassword = []
+        self.cond = True
+        self.cond2 = True
+        self.cond3 = True
         self.input_symbols_list = []
         self.setupUi(self)
 
@@ -1056,6 +1078,7 @@ class ChangePassword(QMainWindow):
         self.label.setObjectName("label")
         self.lcdNumber = QtWidgets.QLCDNumber(self.centralwidget)
         self.lcdNumber.setGeometry(QtCore.QRect(420, 200, 261, 47))
+        self.lcdNumber.setDigitCount(4)
         self.lcdNumber.setObjectName("lcdNumber")
         self.gridLayoutWidget = QtWidgets.QWidget(self.centralwidget)
         self.gridLayoutWidget.setGeometry(QtCore.QRect(420, 260, 261, 340))
@@ -1226,15 +1249,53 @@ class ChangePassword(QMainWindow):
         self.label_2.setText(_translate("MainWindow", "Введите старый пароль"))
 
     def symbols(self, n):
-        self.input_symbols_list.append(n)
+        if len(self.input_symbols_list) != 4:
+            self.input_symbols_list.append(n)
         self.lcdNumber.display("".join(self.input_symbols_list))
 
     def enter(self):
-        self.password = self.input_symbols_list.copy()
+        if self.cond:
+            if self.input_symbols_list == self.password:
+                self.cond = False
+                self.label_2.setGeometry(QtCore.QRect(415, 150, 271, 31))
+                self.label_2.setText("Введите новый пароль")
+            else:
+                self.label_2.setText("Неверный пароль. Повторите попытку!")
+            self.input_symbols_list.clear()
+            self.lcdNumber.display("0")
+        elif self.cond2:
+            if len(self.input_symbols_list) == 4:
+                self.newPassword = self.input_symbols_list.copy()
+                self.label_2.setText("Повторите пароль")
+                self.cond2 = False
+            else:
+                self.label_2.setText("Неверное количество символов")
+            self.input_symbols_list.clear()
+            self.lcdNumber.display("0")
+        elif self.cond3:
+            if self.input_symbols_list == self.newPassword:
+                f = open("Password/Password.txt", "w", encoding="utf8")
+                f.write(' '.join(self.newPassword))
+                f.close()
+                self.input_symbols_list.clear()
+                self.cond3 = False
+                self.label_2.setText("Вы успешно обновили пароль!")
+                self.lcdNumber.display("0")
+                self.hide()
+            else:
+                self.label_2.setText("Пароли не совпадают")
+                self.input_symbols_list.clear()
+                self.lcdNumber.display("0")
 
     def clear(self):
-        del self.input_symbols_list[-1]
-        self.lcdNumber.display("".join(self.input_symbols_list))
+        if len(self.input_symbols_list) == 1 and 0 not in self.input_symbols_list:
+            del self.input_symbols_list[-1]
+            self.lcdNumber.display("0")
+        elif len(self.input_symbols_list) == 0 or len(self.input_symbols_list) == 1:
+            self.lcdNumber.display("0")
+        else:
+            del self.input_symbols_list[-1]
+            self.lcdNumber.display(''.join(self.input_symbols_list))
 
 
 if __name__ == "__main__":
